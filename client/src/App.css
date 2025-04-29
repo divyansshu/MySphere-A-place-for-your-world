@@ -435,3 +435,38 @@ textarea {
 .post-details ul li:hover {
   background-color: #f1f1f1;
 }
+
+.leaderboard {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.leaderboard ul {
+  list-style: none;
+  padding: 0;
+}
+
+.leaderboard li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.leaderboard li:last-child {
+  border-bottom: none;
+}
+
+.leaderboard span {
+  font-size: 1rem;
+  color: #555;
+}

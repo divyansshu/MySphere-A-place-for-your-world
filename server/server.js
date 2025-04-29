@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.js'
 import postRoutes from './routes/postRoutes.js'
 import voteRoutes from './routes/vote.js'
 import trendingRoutes from './routes/trendingRoutes.js'
+import leaderboardRoutes from './routes/leaderboardRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -22,6 +23,7 @@ app.use('/api/posts', postRoutes)
 app.use('/uploads', express.static('uploads'))
 app.use('/api/vote', voteRoutes)
 app.use('/api/trending', trendingRoutes)
+app.use('/api', leaderboardRoutes)
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
