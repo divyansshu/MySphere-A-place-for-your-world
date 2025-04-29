@@ -13,8 +13,9 @@ const ProfilePage = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    console.log(user)
     if (user) {
-       console.log("User object in ProfilePage:", user.user);
+       console.log("User object in ProfilePage:", user);
       setBio(user.bio || "");
     }
   }, [user]);
@@ -23,12 +24,13 @@ const ProfilePage = () => {
     const fetchPosts = async () => {
       console.log('Token: ',  user.token)
       try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${user.token}}`,
-          },
-        };
-        const res = await axios.get(`/posts/user/${user.user.id}`, config);
+      const token = localStorage.getItem('token');
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const res = await axios.get(`/posts/user/${user._id}`, config);
         setPosts(res.data);
       } catch (err) {
         console.error("Error fetching posts:", err);
@@ -46,6 +48,12 @@ const ProfilePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!bio || bio.trim() === "") {
+      setMessage("Bio cannot be empty");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("bio", bio);
     if (profilePic) {
@@ -61,26 +69,28 @@ const ProfilePage = () => {
       }
 
     try {
+      const token = localStorage.getItem('token');
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       };
 
       const res = await axios.put("/auth/update-profile", formData, config);
-      setUser((prev) => ({
-        ...prev,
-        user: {
+      setUser((prev) => {
+        const updatedUser = {
           ...prev,
           bio: res.data.bio,
           profilePic: res.data.profilePic,
-        },
-      }));
+        };
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        return updatedUser;
+      });
       setMessage("Profile updated successfully");
       setIsModalOpen(false);
     } catch (err) {
-      console.error(err.res?.data || "Error updating profile");
+      console.error(err.response?.data || "Error updating profile");
       setMessage("Error updating profile");
     }
   };
@@ -89,7 +99,7 @@ const ProfilePage = () => {
       return <p>Loading profile...</p>;
     }
 
-    if (!user || !user.user) {
+    if (!user) {
       return <p>No user data available.</p>;
     }
 

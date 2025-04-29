@@ -38,7 +38,7 @@ router.post('/login', async (req, res) => {
         const { email, password } = req.body
 
         //check if user exists
-        const user = await User.findOne({ email }).select("username email bio profilePic");
+        const user = await User.findOne({ email })
         if (!user) return res.status(404).json({ error: 'User not found' })
 
         //compare password
@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
         res.status(200).json({
             message: 'Login Successful',
             token,
-            user: { id: user._id, username: user.username, email: user.email }
+            user //: { id: user._id, username: user.username, email: user.email }
         })
     } catch (error) {
         res.status(500).json({ error: 'server error' })
@@ -69,11 +69,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.put('/update-profile', authMiddleware, upload.single('profilePic'), async (req, res) => {
-    console.log('Route handler reached')
+    // console.log('Route handler reached')
     
     try {
-        console.log('Request body:', req.body); // Debugging log
-        console.log('Uploaded file:', req.file); // Debugging log
+        // console.log('Request body:', req.body); // Debugging log
+        // console.log('Uploaded file:', req.file); // Debugging log
 
         const { bio } = req.body;
         const profilePic = req.file;
@@ -81,14 +81,15 @@ router.put('/update-profile', authMiddleware, upload.single('profilePic'), async
         if(!bio) {
             return res.status(400).json({error: 'Bio is required'})
         }
-
-        if(!profilePic) {
-            return res.status(400).json({error: 'Profile picture is required'})
+        const updateData = {bio}
+        if(profilePic) {
+            // return res.status(400).json({error: 'Profile picture is required'})
+            updateData.profilePic = profilePic.path;
         }
 
         const user = await User.findByIdAndUpdate(
             req.user.id,
-            {bio, profilePic: profilePic.path},
+            updateData,
             {new: true}
         )
 

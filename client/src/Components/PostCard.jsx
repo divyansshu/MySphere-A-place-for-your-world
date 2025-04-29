@@ -24,9 +24,10 @@ function PostCard({ post, disableVote = false }) {
     if (!commentText.trim()) return;
 
     try {
+      const token = localStorage.getItem('token');
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`, // Include token for authentication
+          Authorization: `Bearer ${token}`, // Include token for authentication
         },
       };
 
@@ -56,9 +57,10 @@ function PostCard({ post, disableVote = false }) {
     setLikesCount((prev) => (hasLiked ? prev - 1 : prev + 1));
 
     try {
+      const token = localStorage.getItem('token');
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`, // Include token for authentication
+          Authorization: `Bearer ${token}`, // Include token for authentication
         },
       };
       await axios.post(endpoint, {}, config);

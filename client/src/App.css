@@ -8,14 +8,27 @@
 /* General Styles */
 body {
   display: flex;
-  flex-direction: column; /* Add this */
+  flex-direction: column;
   justify-content: flex-start;
   min-height: 100vh;
-  align-items: center; /* keeps it at top */
+  /* Removed align-items: center to allow full width */
   font-family: "Arial", sans-serif;
   background-color: #f4f6f8;
   color: #333;
   line-height: 1.6;
+}
+
+.page-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 20px;
 }
 
 a {
@@ -25,21 +38,6 @@ a {
 
 ul {
   list-style: none;
-}
-
-/* Page Wrapper */
-.page-wrapper {
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Container */
-.container {
-  width: 100%;
-  max-width: 100%; /* Better readability */
-  margin: 0 auto;
-  padding: 20px;
 }
 
 /* Buttons */
@@ -176,9 +174,9 @@ nav ul li a:hover {
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   margin-bottom: 30px;
-  width: 100%; /* Full width */
-  max-width: 1200px; /* Optional: limit max size */
-  margin: 20px auto; /* Center horizontally */
+  width: 100%;
+  max-width: 100%;
+  margin: 20px 0;
 }
 
 /* Headings */
@@ -307,6 +305,7 @@ textarea {
 .trending-section li:hover {
   background-color: #d6d6d6;
 }
+
 /* Responsive Tweaks */
 @media (max-width: 768px) {
   .profile-header {
@@ -329,6 +328,7 @@ textarea {
     width: 100%;
   }
 }
+
 .comments-section {
   margin-top: 20px;
 }
