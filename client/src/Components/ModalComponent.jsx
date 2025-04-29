@@ -1,4 +1,5 @@
 import React from "react";
+import {FaTimes} from 'react-icons/fa'
 
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
@@ -7,7 +8,7 @@ const Modal = ({ isOpen, onClose, children }) => {
     <div style={styles.overlay}>
       <div style={styles.modal}>
         <button style={styles.closeButton} onClick={onClose}>
-          &times;
+          <FaTimes style={styles.icon}/>
         </button>
         {children}
       </div>
@@ -34,6 +35,7 @@ const styles = {
     borderRadius: "8px",
     width: "400px",
     position: "relative",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
   },
   closeButton: {
     position: "absolute",
@@ -43,6 +45,11 @@ const styles = {
     border: "none",
     fontSize: "20px",
     cursor: "pointer",
+    color: "#333", // Ensure the button is visible
+  },
+  icon: {
+    fontSize: "24px", // Adjust the size of the icon
+    color: "#333", // Ensure the icon is visible
   },
 };
 

@@ -17,9 +17,10 @@ const VotingPage = () => {
       return; // Prevent the request if the tag is empty
     }
       try {
+        const token = localStorage.getItem('token');
         const config = {
           headers: {
-            Authorization: `Bearer ${user?.token}`, // Include the token in the request
+            Authorization: `Bearer ${token}`, // Include the token in the request
           },
         };
         const res = await axios.get(`/vote/${normalizedTag}`, config);
@@ -39,9 +40,10 @@ const VotingPage = () => {
 
   const votePost = async (postId) => {
     try {
+      const token = localStorage.getItem('token');
       const config = {
         headers: {
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       };
@@ -104,9 +106,9 @@ const VotingPage = () => {
               <p>Votes: {post.voteCount || 0}</p>
               <button
                 onClick={() => votePost(post._id)}
-                disabled={post.votedBy?.includes(user.user.id)}
+                disabled={post.votedBy?.includes(user?.id)}
               >
-                {post.votedBy?.includes(user.user.id) ? "Voted" : "Vote"}
+                {post.votedBy?.includes(user?.id) ? "Voted" : "Vote"}
               </button>
             </div>
           ))}

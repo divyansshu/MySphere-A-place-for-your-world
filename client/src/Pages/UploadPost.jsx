@@ -4,46 +4,46 @@ import { useAuth } from "../context/AuthContext";
 
 const UploadPost = () => {
   const { user } = useAuth();
-//   console.log('User in Upload Post: ', user)
-  const [caption, setCaption] = useState("")
-  const [tags, setTags] = useState("")
-  const [image, setImage] = useState("null")
-  const [message, setMessage] = useState("")
+  //   console.log('User in Upload Post: ', user)
+  const [caption, setCaption] = useState("");
+  const [tags, setTags] = useState("");
+  const [image, setImage] = useState("null");
+  const [message, setMessage] = useState("");
 
   const handleUpload = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!image || !caption || !tags) {
-        setMessage('Please fill all fields')
-        return
+      setMessage("Please fill all fields");
+      return;
     }
 
     try {
-        const formData = new FormData()
-        formData.append('image', image)
-        formData.append('caption', caption)
-        formData.append('tags', tags)
-        formData.append('uploaderId', user?.id)
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("caption", caption);
+      formData.append("tags", tags);
+      // Removed uploaderId from formData as backend extracts it from token
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-        const config = {
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${user?.token}`
-            }
-        }
+      // console.log('formData: ', formData)
+      // console.log('Config: ', config)
 
-        // console.log('formData: ', formData)
-        // console.log('Config: ', config)
-
-        const {data} = await axios.post('/posts/upload', formData, config)
-        setMessage('Upload successful!')
-        setCaption("")
-        setTags("")
-        setImage(null)
-    }catch(error) {
-        console.error(error)
-        setMessage('Upload failed. Try again')
+      const { data } = await axios.post("/posts/upload", formData, config);
+      setMessage("Upload successful!");
+      setCaption("");
+      setTags("");
+      setImage(null);
+    } catch (error) {
+      console.error(error);
+      setMessage("Upload failed. Try again");
     }
-  }
+  };
 
   return (
     <div className="page-wrapper">
@@ -74,6 +74,5 @@ const UploadPost = () => {
     </div>
   );
 };
-
 
 export default UploadPost;
