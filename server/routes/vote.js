@@ -43,6 +43,17 @@ router.post('/', authenticate, async (req, res) => {
 
     try {
 
+        //check if the user has already voted on a post with the same tag
+        const existingVote = await Post.findOne({
+            tags: tag,
+            votedBy: userId
+        })
+        if (existingVote) {
+            return res
+            .status(400)
+            .json({error: 'You have already voted on a post with this tag'})
+        }
+
         const post = await Post.findById(postId)
 
         if (!post) {

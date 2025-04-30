@@ -66,14 +66,14 @@ const VotingPage = () => {
           post._id === data._id ? data : post
         )
       );
-      // setVotedPostId(postId);
+      setVotedPostId(postId);
       toast.success("Thank you for voting! 🎉");
     } catch (err) {
       if (
         err.response &&
-        err.response.data.error === "You have already voted on this post"
+        err.response.data.error === "You have already voted on this post with this tag"
       ) {
-        toast.error("You have already voted on this post.");
+        toast.error("You have already voted on this pos with this tag.");
       } else {
         console.error(err);
         toast.error("Failed to vote. Please try again.");
@@ -106,9 +106,9 @@ const VotingPage = () => {
               <p>Votes: {post.voteCount || 0}</p>
               <button
                 onClick={() => votePost(post._id)}
-                disabled={post.votedBy?.includes(user?.id)}
+                disabled={votedPostId !== null && votedPostId !== post.id} //disable if already voted
               >
-                {post.votedBy?.includes(user?.id) ? "Voted" : "Vote"}
+                {votedPostId === post._id ? 'voted' : 'vote'}
               </button>
             </div>
           ))}
